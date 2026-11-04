@@ -1,0 +1,45 @@
+MI APP DE GASTOS PERSONALES - V1
+
+Archivos: index.html, style.css, app.js, manifest.webmanifest, sw.js, icons/.
+No usa librerías externas, servidores de datos ni cuentas. Todo se almacena en localStorage.
+
+IMPORTANTE: abrir index.html desde Archivos del iPhone no instala una PWA. Debe publicarse la carpeta completa en un alojamiento HTTPS estático. No subas tus archivos JSON de respaldo al alojamiento: el ZIP solo incluye código y gráficos, sin datos personales.
+
+PUBLICAR GRATIS DESDE IPHONE (opción GitHub Pages):
+1. Crear una cuenta gratuita de GitHub (solo para publicar; no es una cuenta de la app).
+2. Crear repositorio público llamado, por ejemplo, mis-gastos-pwa.
+3. Subir TODOS los archivos de esta carpeta, respetando las rutas. En GitHub web, Add file > Upload files; Safari puede requerir 'Solicitar sitio web de escritorio'. El ZIP completo no se despliega automáticamente en GitHub Pages: hay que subir los archivos descomprimidos.
+4. Settings > Pages > Build and deployment > Deploy from a branch > main / (root) > Save.
+5. Esperar la publicación y abrir https://USUARIO.github.io/mis-gastos-pwa/ en Safari.
+6. Safari > Compartir > Agregar a pantalla de inicio > Agregar.
+7. Abrir desde el icono. Registrar un gasto de prueba. Ir a Ajustes > Exportar copia JSON y guardarla en Archivos.
+8. Para comprobar funcionamiento sin conexión, abrir primero la app conectada, luego activar modo avión y volver a abrirla.
+
+ATAJO 1 - REGISTRAR GASTO
+1. Abrir Atajos > + > renombrar 'Registrar gasto'.
+2. Añadir acción 'Dictar texto' (idioma Español).
+3. Añadir acción 'Codificar URL' / 'URL Encode' sobre el texto dictado.
+4. Añadir acción 'Texto' con esta estructura, reemplazando DOMINIO por la URL pública completa de tu app:
+   https://USUARIO.github.io/mis-gastos-pwa/#gasto=[Texto codificado]
+   [Texto codificado] debe ser la variable mágica de la acción anterior, no caracteres literales.
+5. Añadir acción 'Abrir URLs' sobre el resultado de Texto.
+6. Probar con 'Gasté 25 mil en supermercado y 8 mil en farmacia'. Revisar antes de guardar.
+
+ATAJO 2 - COMPARTIR GASTO
+1. Atajos > + > renombrar 'Compartir gasto'.
+2. Detalles del atajo > Mostrar en hoja para compartir > tipos aceptados: Texto.
+3. Añadir 'Codificar URL' sobre 'Entrada del atajo'.
+4. Añadir 'Texto' con https://USUARIO.github.io/mis-gastos-pwa/#gasto=[Texto codificado]
+5. Añadir 'Abrir URLs' sobre el texto construido.
+6. Seleccionar texto en otra app > Compartir > Compartir gasto.
+
+PRIVACIDAD Y LIMITACIONES
+- El fragmento #gasto=... NO se transmite al servidor HTTP por diseño web. El texto se abre en la app y se guarda solo al confirmar.
+- Atajos de Apple procesa la voz mediante la función Dictar texto de iOS; el procesamiento de dictado depende de los ajustes/capacidades de Apple y no puede garantizarse que sea totalmente local. Si esto preocupa, usar entrada escrita en la app.
+- El enlace puede quedar temporalmente en el historial del sistema o en la interfaz de Atajos. No compartirlo públicamente.
+- No se leen notificaciones, correos ni cuentas financieras.
+- localStorage puede perderse si se borran datos del sitio, se elimina la app o se cambia de dispositivo. Hacer exportaciones JSON periódicas y guardarlas en Archivos/iCloud Drive si así se elige (iCloud implica sincronización externa gestionada por Apple).
+- La detección de duplicados compara importe, descripción normalizada y fecha, y avisa sobre cercanía temporal cuando hay marcas horarias. No elimina compras automáticamente.
+- El intérprete es local y basado en reglas; no comprende todas las frases complejas. Corregir la vista previa antes de guardar.
+- El presupuesto es un valor opcional común a los meses consultados en esta primera versión.
+- Si actualizás archivos del sitio, el caché sin conexión puede tardar en renovarse. Cambiar la versión CACHE en sw.js para publicar una nueva versión.
